@@ -322,6 +322,7 @@ class _UsernamePasswordForm extends StatefulWidget {
 }
 
 class _UsernamePasswordFormState extends State<_UsernamePasswordForm> {
+  final _formKey = GlobalKey<FormState>();
   final GlobalKey<FormFieldState<String>> _usernameKey = GlobalKey();
   final GlobalKey<FormFieldState<String>> _passwordKey = GlobalKey();
 
@@ -339,9 +340,7 @@ class _UsernamePasswordFormState extends State<_UsernamePasswordForm> {
     final realmUrl = serverSettings.realmUrl;
     final usernameFieldState = _usernameKey.currentState!;
     final passwordFieldState = _passwordKey.currentState!;
-    final usernameValid = usernameFieldState.validate(); // Side effect: on-field error text
-    final passwordValid = passwordFieldState.validate(); // Side effect: on-field error text
-    if (!usernameValid || !passwordValid) {
+    if (!_formKey.currentState!.validate()) {
       return;
     }
     final String username = usernameFieldState.value!;
@@ -460,6 +459,7 @@ class _UsernamePasswordFormState extends State<_UsernamePasswordForm> {
         )));
 
     return Form(
+      key: _formKey,
       // TODO(#110) Try to highlight CZO / Zulip Cloud realms in autofill
       child: AutofillGroup(
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
