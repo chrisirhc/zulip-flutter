@@ -63,6 +63,10 @@
   "@actionSheetOptionUnstarMessage":  {
     "description": "Label for unstar button on action sheet."
   },
+  "errorAccountAlreadyExists": "Account already exists: {email}",
+  "@errorAccountAlreadyExists": {
+    "description": "Error message when the account cannot be added as it already exists."
+  },
   "errorCouldNotFetchMessageSource": "Could not fetch message source",
   "@errorCouldNotFetchMessageSource": {
     "description": "Error message when the source of a message could not be fetched."
