@@ -131,3 +131,5 @@ class MalformedServerResponseException extends ServerException {
             .errorMalformedResponseWithCause(
               httpStatus, causeException.toString()));
 }
+
+class AccountAlreadyExistsException implements Exception {}

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:drift/native.dart';
+import 'package:drift/remote.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
@@ -583,7 +584,15 @@ class LiveGlobalStore extends GlobalStore {
 
   @override
   Future<Account> doInsertAccount(AccountsCompanion data) async {
-    final accountId = await _db.createAccount(data); // TODO(log): db errors
+    int accountId;
+    try {
+      accountId = await _db.createAccount(data); // TODO(log): db errors
+    } on DriftRemoteException catch (e) {
+      if ((e.remoteCause as SqliteException).extendedResultCode == 2067) { // SQLITE_CONSTRAINT_UNIQUE
+        throw AccountAlreadyExistsException();
+      }
+      rethrow;
+    }
     // We can *basically* predict what the Account will contain
     // based on the AccountsCompanion and the account ID.  But
     // if we did that and then there was some subtle case where we
